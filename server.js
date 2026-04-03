@@ -25,16 +25,23 @@ app.get('/api/health', (req, res) => {
 });
 
 // Connect to MongoDB
+const PORT = process.env.PORT || 5000;
+
+// Server hamesha start hoga
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
+
+// MongoDB connect alag se
 mongoose.connect(process.env.MONGO_URI)
   .then(() => {
     console.log('✅ MongoDB Connected');
-    app.listen(process.env.PORT || 5000, () => {
-      console.log(`🚀 Server running on port ${process.env.PORT || 5000}`);
-    });
   })
   .catch(err => {
-    console.error('❌ MongoDB connection error:', err.message);
-    process.exit(1);
+    console.log('❌ MongoDB error:', err.message);
   });
 
-module.exports = app;
+// Root route (IMPORTANT)
+app.get('/', (req, res) => {
+  res.send('Backend running 🚀');
+});
